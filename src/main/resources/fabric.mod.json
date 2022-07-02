@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "vanilla-tweaks-gui",
+  "version": "${version}",
+
+  "name": "Vanilla Tweaks GUI",
+  "description": "This mod add a GUI to use most easier the vanilla tweaks DataPack.",
+  "authors": [
+    "Mr7fenix"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/modid/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.mr7fenix.vanillatweaksgui.ExampleMod"
+    ],
+    "client": [
+      "me.mr7fenix.vanillatweaksgui.VanillaTweakGUIClient"
+    ]
+  },
+  "mixins": [
+    "modid.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.6",
+    "fabric": "*",
+    "minecraft": "~1.19",
+    "java": ">=17",
+    "fabric-key-binding-api-v1": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
