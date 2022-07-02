@@ -4,6 +4,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.*;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -27,11 +28,11 @@ public class VanillaTweaksGui extends Screen {
         playerId = getPlayersId();
     }
 
-
     @Override
     protected void init() {
+
         client.keyboard.setRepeatEvents(true);
-        homes = ExampleMod.CONFIG.getHomes();
+        homes = VanillaTweaksGuiMain.CONFIG.getHomes();
         widgets = new HashMap<>();
 
         mainPage();
@@ -51,6 +52,14 @@ public class VanillaTweaksGui extends Screen {
                 }
             }
         }
+    }
+
+    @Override
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        renderBackground(matrices);
+        String version = "Version: 1.0.0";
+        drawCenteredText(matrices, textRenderer, version, width - textRenderer.getWidth(version) / 2 - 6, height - 16, 0xffffff);
+        super.render(matrices, mouseX, mouseY, delta);
     }
 
     private void goHome(int i) {
@@ -105,8 +114,11 @@ public class VanillaTweaksGui extends Screen {
             client.setScreen(null);
         }));
 
-        ButtonWidget previousButton = addDrawableChild(new PageTurnWidget(START_POINT, 162, false, button -> changePage(-1), true));
-        ButtonWidget nextButton = addDrawableChild(new PageTurnWidget(START_POINT + 86, 162, true, button -> changePage(1), true));
+        ButtonWidget previousButton = addDrawableChild(new PageTurnWidget(START_POINT, 162, false, button -> changePage(-1, true), true));
+        ButtonWidget nextButton = addDrawableChild(new PageTurnWidget(START_POINT + 86, 162, true, button -> changePage(1, true), true));
+
+        ButtonWidget previousButtonPlayer = addDrawableChild(new PageTurnWidget(START_POINT + 170, 162, false, button -> changePage(-1, false), true));
+        ButtonWidget nextButtonPlayer = addDrawableChild(new PageTurnWidget(START_POINT + 86 + 170, 162, true, button -> changePage(1, false), true));
 
         widgets.get("main").add(addButton);
         widgets.get("main").add(exitButton);
@@ -114,16 +126,25 @@ public class VanillaTweaksGui extends Screen {
         widgets.get("main").add(previousButton);
         widgets.get("main").add(backButton);
         widgets.get("main").add(spawnButton);
+        widgets.get("main").add(nextButtonPlayer);
+        widgets.get("main").add(previousButtonPlayer);
 
     }
 
-    private void changePage(int i) {
-        int r = homes.size() - ((homes.size() / BUTTON_PER_PAGE) * BUTTON_PER_PAGE);
-        int numPag = (homes.size() / BUTTON_PER_PAGE) + r;
+    private void changePage(int i, boolean isHome) {
+        int numPag;
 
+        if (isHome) {
+            int r = homes.size() - ((homes.size() / BUTTON_PER_PAGE) * BUTTON_PER_PAGE);
+            numPag = (homes.size() / BUTTON_PER_PAGE) + r;
+        }else {
+            int r = playerId.size() - ((playerId.size() / BUTTON_PER_PAGE) * BUTTON_PER_PAGE);
+            numPag = (playerId.size() / BUTTON_PER_PAGE) + r;
+        }
 
         if (actualPage + i >= 1 && actualPage + i <= numPag) actualPage += i;
-        showHome(actualPage);
+        if(isHome) showHome(actualPage);
+        else showPlayer(actualPage);
     }
 
     private void show(String group) {
@@ -153,24 +174,46 @@ public class VanillaTweaksGui extends Screen {
                     client.setScreen(null);
                 }));
 
-                ButtonWidget deleteButton = addDrawableChild(new TexturedButtonWidget(START_POINT + 120, distance, 20, 20, 0, 0, 20, new Identifier("vanilla-tweaks-gui:textures/gui/bin.png"), 20, 20, (onPress) -> {
-                    ExampleMod.CONFIG.removeHome(entry.getKey());
-                    client.setScreen(this);
-                    //TODO: Add a confirmation dialog
+                ButtonWidget deleteButton = addDrawableChild(new TexturedButtonWidget(START_POINT + 142, distance, 20, 20, 0, 0, 20, new Identifier("vanilla-tweaks-gui:textures/gui/bin.png"), 20, 20, (onPress) -> {
+                    hideAll();
+                    confirm(entry.getKey());
                 }));
 
-               // ButtonWidget modifyButton = addDrawableChild(new TexturedButtonWidget(START_POINT + 120, distance, 20, 20, 0, 0, 20, new Identifier("vanilla-tweaks-gui:textures/gui/modify.png"), 20, 20, (onPress) -> {
-               //     TODO: Add modify home screen
-               // }));
+                ButtonWidget modifyButton = addDrawableChild(new TexturedButtonWidget(START_POINT + 120, distance, 20, 20, 0, 0, 20, new Identifier("vanilla-tweaks-gui:textures/gui/modify.png"), 20, 20, (onPress) -> {
+                    hideAll();
+                    modifyScreen(entry.getKey());
+                }));
                 i++;
 
                 distance += 22;
 
                 widgets.get("homes").add(homeButton);
                 widgets.get("homes").add(deleteButton);
-                //widgets.get("homes").add(modifyButton);
+                widgets.get("homes").add(modifyButton);
             } else j++;
         }
+    }
+
+    private void confirm(int key) {
+        TextFieldWidget title = addDrawableChild(new TextFieldWidget(textRenderer, START_POINT + 25, 10, 110, 20, Text.of("Sei sicuro?")));
+        title.setDrawsBackground(false);
+        title.setText("Sei sicuro?");
+        title.setEditable(false);
+        title.setTextFieldFocused(false);
+        title.setFocusUnlocked(false);
+        title.setCursor(0);
+        title.setUneditableColor(0xFFFFFF);
+
+        ButtonWidget yesButton = addDrawableChild(new ButtonWidget(START_POINT, 32, 110, 20, Text.of("Si"), (onPress) -> {
+            VanillaTweaksGuiMain.CONFIG.removeHome(key);
+            client.setScreen(this);
+        }));
+
+        ButtonWidget noButton = addDrawableChild(new ButtonWidget(START_POINT, 54, 110, 20, Text.of("No"), (onPress) -> {
+            client.setScreen(this);
+        }));
+
+        widgets.put("confirm", Arrays.asList(yesButton, noButton));
     }
 
     private void clearPreviousButtons(String group) {
@@ -178,6 +221,37 @@ public class VanillaTweaksGui extends Screen {
         for (ClickableWidget previous : previousButtons) {
             remove(previous);
         }
+    }
+
+    private void modifyScreen(Integer i){
+        TextFieldWidget newName = addDrawableChild(new TextFieldWidget(textRenderer, START_POINT, 10, 110, 20, Text.of(homes.get(i))));
+        TextFieldWidget newId = addDrawableChild(new TextFieldWidget(textRenderer, START_POINT, 42, 110, 20, Text.of(i.toString())));
+        newName.setText(homes.get(i));
+        newId.setText(i.toString());
+
+        onlyNumberPredicate(newId);
+
+
+
+        ButtonWidget buttonAdd = addDrawableChild(new ButtonWidget(START_POINT - 2, 70, 114, 20, Text.of("Modifica"), (onPress) -> {
+            VanillaTweaksGuiMain.CONFIG.modifyHomes(newName.getText(), Integer.parseInt(newId.getText()));
+            client.setScreen(this);
+        }));
+
+        ButtonWidget buttonBack = addDrawableChild(new ButtonWidget(START_POINT - 2, 92, 114, 20, Text.of("Indietro"), (onPress) -> {
+            client.setScreen(this);
+        }));
+        widgets.put("setHome", Arrays.asList(newName, newId, buttonAdd, buttonBack));
+    }
+
+    private void onlyNumberPredicate (TextFieldWidget id){
+        id.setTextPredicate((s) -> {
+            try {
+                return Integer.parseInt(s) > 0;
+            } catch (NumberFormatException nfe) {
+                return s.trim().length() == 0;
+            }
+        });
     }
 
     private void showPlayer(int page) {
@@ -219,17 +293,11 @@ public class VanillaTweaksGui extends Screen {
         name.setText("Home " + nextID);
         id.setText(nextID);
 
-        id.setTextPredicate((s) -> {
-            try {
-                return Integer.parseInt(s) > 0;
-            } catch (NumberFormatException nfe) {
-                return s.trim().length() == 0;
-            }
-        });
+        onlyNumberPredicate(id);
 
         ButtonWidget buttonAdd = addDrawableChild(new ButtonWidget(START_POINT - 2, 70, 114, 20, Text.of("Aggiungi"), (onPress) -> {
             int finalId = Integer.parseInt(id.getText().trim().length() == 0 ? nextID : id.getText());
-            ExampleMod.CONFIG.setHomes(name.getText(), finalId);
+            VanillaTweaksGuiMain.CONFIG.setHomes(name.getText(), finalId);
             player.sendCommand("trigger sethome set " + finalId);
             client.setScreen(this);
         }));

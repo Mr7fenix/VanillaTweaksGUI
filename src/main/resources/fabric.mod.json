@@ -19,10 +19,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.mr7fenix.vanillatweaksgui.ExampleMod"
+      "me.mr7fenix.vanillatweaksgui.VanillaTweaksGuiMain"
     ],
     "client": [
-      "me.mr7fenix.vanillatweaksgui.VanillaTweakGUIClient"
+      "me.mr7fenix.vanillatweaksgui.VanillaTweakGuiClient"
     ]
   },
   "mixins": [

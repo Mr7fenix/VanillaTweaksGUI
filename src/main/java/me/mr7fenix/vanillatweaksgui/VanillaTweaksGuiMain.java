@@ -5,7 +5,7 @@ import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ExampleMod implements ModInitializer {
+public class VanillaTweaksGuiMain implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger("vanilla-tweaks-gui");
 	public static ModConfig CONFIG;
 
