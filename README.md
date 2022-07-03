@@ -1,10 +1,16 @@
 # Vanilla Tweaks GUI
+This mod simplifies vanilla tweaks data packs' commands by using a GUI.
+Datapack support: spawn, home, tpa, back
 
 ## Installation
 
-First Download and install Fabric version in reference at mod version.
-Next step download mod and put it in your mods folder on your minecraft directory.
-Last step download and put in your mod folder the following mods: FabricAPI, Completeconfig.
+First: Download and install the Fabric version required by the mod version you're downloading.
+
+Second: Download the mod and put it in your mods folder, inside your Minecraft directory (usually %appdata%\.minecraft\mods).
+
+Third: In order for the mod to work, it also needs the following mods: FabricAPI, Completeconfig.
 
 ## Usage
-One your in game press the key 'J' to open the GUI.
+Once you are in-game press the key 'J' to open the GUI.
+
+

@@ -22,7 +22,7 @@ public class VanillaTweaksGui extends Screen {
     final int BUTTON_PER_PAGE = 7;
 
     protected VanillaTweaksGui(ClientPlayerEntity player, MinecraftClient client) {
-        super(Text.of("Mi piace la banana"));
+        super(Text.of("VanillaTweaksGui"));
         this.player = player;
         this.client = client;
         playerId = getPlayersId();
@@ -95,12 +95,12 @@ public class VanillaTweaksGui extends Screen {
 
     private void mainPage() {
         widgets.put("main", new ArrayList<>(homes.size()));
-        ButtonWidget addButton = addDrawableChild(new ButtonWidget(START_POINT, height - 52, 110, 20, Text.of("Aggiungi"), (onPress) -> {
+        ButtonWidget addButton = addDrawableChild(new ButtonWidget(START_POINT, height - 52, 110, 20, Text.of("Add Home"), (onPress) -> {
             show("setHome");
             setFocusedElement("setHome");
         }));
 
-        ButtonWidget exitButton = addDrawableChild(new ButtonWidget(START_POINT, height - 30, 110, 20, Text.of("Esci"), (onPress) -> {
+        ButtonWidget exitButton = addDrawableChild(new ButtonWidget(START_POINT, height - 30, 110, 20, Text.of("Exit"), (onPress) -> {
             client.setScreen(null);
         }));
 
@@ -195,16 +195,16 @@ public class VanillaTweaksGui extends Screen {
     }
 
     private void confirm(int key) {
-        TextFieldWidget title = addDrawableChild(new TextFieldWidget(textRenderer, START_POINT + 25, 10, 110, 20, Text.of("Sei sicuro?")));
+        TextFieldWidget title = addDrawableChild(new TextFieldWidget(textRenderer, START_POINT + 25, 10, 110, 20, Text.of("Your sure?")));
         title.setDrawsBackground(false);
-        title.setText("Sei sicuro?");
+        title.setText("Your sure?");
         title.setEditable(false);
         title.setTextFieldFocused(false);
         title.setFocusUnlocked(false);
         title.setCursor(0);
         title.setUneditableColor(0xFFFFFF);
 
-        ButtonWidget yesButton = addDrawableChild(new ButtonWidget(START_POINT, 32, 110, 20, Text.of("Si"), (onPress) -> {
+        ButtonWidget yesButton = addDrawableChild(new ButtonWidget(START_POINT, 32, 110, 20, Text.of("Yes"), (onPress) -> {
             VanillaTweaksGuiMain.CONFIG.removeHome(key);
             client.setScreen(this);
         }));
@@ -225,23 +225,25 @@ public class VanillaTweaksGui extends Screen {
 
     private void modifyScreen(Integer i){
         TextFieldWidget newName = addDrawableChild(new TextFieldWidget(textRenderer, START_POINT, 10, 110, 20, Text.of(homes.get(i))));
-        TextFieldWidget newId = addDrawableChild(new TextFieldWidget(textRenderer, START_POINT, 42, 110, 20, Text.of(i.toString())));
+        //TextFieldWidget newId = addDrawableChild(new TextFieldWidget(textRenderer, START_POINT, 42, 110, 20, Text.of(i.toString())));
         newName.setText(homes.get(i));
+
+        /*
         newId.setText(i.toString());
-
         onlyNumberPredicate(newId);
+        */
 
 
 
-        ButtonWidget buttonAdd = addDrawableChild(new ButtonWidget(START_POINT - 2, 70, 114, 20, Text.of("Modifica"), (onPress) -> {
-            VanillaTweaksGuiMain.CONFIG.modifyHomes(newName.getText(), Integer.parseInt(newId.getText()));
+        ButtonWidget buttonAdd = addDrawableChild(new ButtonWidget(START_POINT - 2, 70, 114, 20, Text.of("Modify"), (onPress) -> {
+            VanillaTweaksGuiMain.CONFIG.modifyHomes(newName.getText(), /*Integer.parseInt(newId.getText())*/ i);
             client.setScreen(this);
         }));
 
-        ButtonWidget buttonBack = addDrawableChild(new ButtonWidget(START_POINT - 2, 92, 114, 20, Text.of("Indietro"), (onPress) -> {
+        ButtonWidget buttonBack = addDrawableChild(new ButtonWidget(START_POINT - 2, 92, 114, 20, Text.of("Back"), (onPress) -> {
             client.setScreen(this);
         }));
-        widgets.put("setHome", Arrays.asList(newName, newId, buttonAdd, buttonBack));
+        widgets.put("setHome", Arrays.asList(newName, /*newId*/ buttonAdd, buttonBack));
     }
 
     private void onlyNumberPredicate (TextFieldWidget id){
@@ -288,20 +290,20 @@ public class VanillaTweaksGui extends Screen {
 
     private void setHomeScreen() {
         String nextID = getFirstFreeId().toString();
-        TextFieldWidget name = addDrawableChild(new TextFieldWidget(textRenderer, START_POINT, 10, 110, 20, Text.of("Nome")));
+        TextFieldWidget name = addDrawableChild(new TextFieldWidget(textRenderer, START_POINT, 10, 110, 20, Text.of("Name")));
         TextFieldWidget id = addDrawableChild(new TextFieldWidget(textRenderer, START_POINT, 42, 110, 20, Text.of(nextID)));
         name.setText("Home " + nextID);
         id.setText(nextID);
 
         onlyNumberPredicate(id);
 
-        ButtonWidget buttonAdd = addDrawableChild(new ButtonWidget(START_POINT - 2, 70, 114, 20, Text.of("Aggiungi"), (onPress) -> {
+        ButtonWidget buttonAdd = addDrawableChild(new ButtonWidget(START_POINT - 2, 70, 114, 20, Text.of("Add"), (onPress) -> {
             int finalId = Integer.parseInt(id.getText().trim().length() == 0 ? nextID : id.getText());
             VanillaTweaksGuiMain.CONFIG.setHomes(name.getText(), finalId);
             player.sendCommand("trigger sethome set " + finalId);
             client.setScreen(this);
         }));
-        ButtonWidget buttonBack = addDrawableChild(new ButtonWidget(START_POINT - 2, 92, 114, 20, Text.of("Indietro"), (onPress) -> {
+        ButtonWidget buttonBack = addDrawableChild(new ButtonWidget(START_POINT - 2, 92, 114, 20, Text.of("Back"), (onPress) -> {
             client.setScreen(this);
         }));
 

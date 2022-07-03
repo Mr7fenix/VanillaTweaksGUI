@@ -4,16 +4,16 @@
   "version": "${version}",
 
   "name": "Vanilla Tweaks GUI",
-  "description": "This mod add a GUI to use most easier the vanilla tweaks DataPack.",
+  "description": "This mod simplifies vanilla tweaks data packs' commands by using a GUI.",
   "authors": [
     "Mr7fenix"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://mr7fenix.me/",
+    "sources": "https://github.com/Mr7fenix/VanillaTweaksGUI"
   },
 
-  "license": "CC0-1.0",
+  "license": "MIT",
   "icon": "assets/modid/icon.png",
 
   "environment": "*",
@@ -22,7 +22,7 @@
       "me.mr7fenix.vanillatweaksgui.VanillaTweaksGuiMain"
     ],
     "client": [
-      "me.mr7fenix.vanillatweaksgui.VanillaTweakGuiClient"
+      "me.mr7fenix.vanillatweaksgui.VanillaTweaksGuiClient"
     ]
   },
   "mixins": [

@@ -7,15 +7,16 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import org.lwjgl.glfw.GLFW;
 
-public class VanillaTweakGuiClient implements ClientModInitializer {
+public class VanillaTweaksGuiClient implements ClientModInitializer {
     private static KeyBinding keyBindings;
+
     @Override
     public void onInitializeClient() {
         keyBindings = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "j.vanillatweaksgui.openGUI",
+                "Open GUI",
                 InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_J,
-                "key.category.vanillatweaksgui"
+                "VanillaTweaksGui"
         ));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
