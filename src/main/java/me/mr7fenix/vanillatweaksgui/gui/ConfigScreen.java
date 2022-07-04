@@ -22,8 +22,8 @@ public class ConfigScreen extends VanillaTweaksGui {
         addDrawableChild(new ButtonWidget(300, 10, 110, 20, Text.of("Back"), (onPress) -> client.setScreen(this)));
 
         addDrawableChild(new ButtonWidget(300, 32, 110, 20, Text.of("Save"), (onPress) -> {
-            //TODO: add command to set max home
-            client.setScreen(this);
+            player.sendCommand("scoreboard players set #limit homes.config " + limit.getText());
+            client.setScreen(new MainScreen(player, client));
         }));
     }
 

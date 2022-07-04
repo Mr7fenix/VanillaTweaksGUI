@@ -15,11 +15,12 @@ public class PlayerButtons extends ListHandler {
 
     public void showPlayer(int page) {
         clearPreviousButtons();
+        Map<String, Integer> playersId = getPlayersId();
         int distance = 10;
 
         int i = 0;
         int j = BUTTON_PER_PAGE;
-        for (Map.Entry<String, Integer> entry : getPlayersId().entrySet()) {
+        for (Map.Entry<String, Integer> entry : playersId.entrySet()) {
             if (i >= BUTTON_PER_PAGE) {
                 break;
             }
@@ -39,10 +40,10 @@ public class PlayerButtons extends ListHandler {
         }
 
         //Turn page Back
-        screen.addDrawableChild(new PageTurnWidget(VanillaTweaksGui.START_POINT + 170, 162, false, button -> showPlayer(turnPage(-1, true)), true));
+        screen.addDrawableChild(new PageTurnWidget(VanillaTweaksGui.START_POINT + 170, 162, false, button -> showPlayer(turnPage(-1, playersId.size())), true));
 
         //Turn page Forward
-        screen.addDrawableChild(new PageTurnWidget(VanillaTweaksGui.START_POINT + 86 + 170, 162, true, button -> showPlayer(turnPage(-1, true)), true));
+        screen.addDrawableChild(new PageTurnWidget(VanillaTweaksGui.START_POINT + 86 + 170, 162, true, button -> showPlayer(turnPage(-1, playersId.size())), true));
 
     }
 }

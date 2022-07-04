@@ -1,5 +1,6 @@
 package me.mr7fenix.vanillatweaksgui.gui;
 
+import me.mr7fenix.vanillatweaksgui.VanillaTweaksGuiMain;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.network.ClientPlayerEntity;

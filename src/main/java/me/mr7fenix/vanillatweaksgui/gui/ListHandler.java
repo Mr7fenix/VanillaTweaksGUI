@@ -20,16 +20,11 @@ public class ListHandler {
         new PlayerButtons(screen).showPlayer(1);
     }
 
-    public int turnPage(int i, boolean isHome) {
+    public int turnPage(int i, int size) {
         int numPag;
 
-        if (isHome) {
-            int r = screen.homes.size() - ((screen.homes.size() / BUTTON_PER_PAGE) * BUTTON_PER_PAGE);
-            numPag = (screen.homes.size() / BUTTON_PER_PAGE) + r;
-        } else {
-            int r = getPlayersId().size() - ((getPlayersId().size() / BUTTON_PER_PAGE) * BUTTON_PER_PAGE);
-            numPag = (getPlayersId().size() / BUTTON_PER_PAGE) + r;
-        }
+        int r = size - (size / BUTTON_PER_PAGE) * BUTTON_PER_PAGE;
+        numPag = (size / BUTTON_PER_PAGE) + r;
 
         if (actualPage + i >= 1 && actualPage + i <= numPag) {
             actualPage += i;

@@ -16,7 +16,6 @@ import java.util.*;
 public abstract class VanillaTweaksGui extends Screen {
     public ClientPlayerEntity player;
     public MinecraftClient client;
-    public Map<Integer, String> homes;
 
     static final int START_POINT = 10;
 
@@ -48,7 +47,7 @@ public abstract class VanillaTweaksGui extends Screen {
     @MustBeInvokedByOverriders
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         renderBackground(matrices);
-        String version = "Version: 1.0.0";
+        String version = "Version: 1.0.1";
         drawCenteredText(matrices, textRenderer, version, width - textRenderer.getWidth(version) / 2 - 6, height - 16, 0xffffff);
         super.render(matrices, mouseX, mouseY, delta);
     }
