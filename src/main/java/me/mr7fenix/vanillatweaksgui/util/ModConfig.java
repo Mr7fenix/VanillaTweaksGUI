@@ -26,7 +26,6 @@ public class ModConfig extends Config {
     }
 
     public void modifyHomes(String name, int i) {
-        homes.remove(i, name);
         homes.put(i, name);
         save();
     }

@@ -1,5 +1,6 @@
 package me.mr7fenix.vanillatweaksgui;
 
+import me.mr7fenix.vanillatweaksgui.gui.MainScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -21,7 +22,7 @@ public class VanillaTweaksGuiClient implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keyBindings.wasPressed()) {
-                client.setScreen(new VanillaTweaksGui(client.player, client));
+                client.setScreen(new MainScreen(client.player, client));
             }
         });
     }
