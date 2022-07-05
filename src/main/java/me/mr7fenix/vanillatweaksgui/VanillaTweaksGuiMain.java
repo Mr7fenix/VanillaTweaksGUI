@@ -16,8 +16,4 @@ public class VanillaTweaksGuiMain implements ModInitializer {
 		CONFIG = new ModConfig();
 		CONFIG.load();
 	}
-
-	public static String provider( String filename ) {
-		return "#Pippo\n";
-	}
 }

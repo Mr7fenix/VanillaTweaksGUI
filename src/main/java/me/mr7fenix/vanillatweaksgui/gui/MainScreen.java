@@ -1,6 +1,5 @@
 package me.mr7fenix.vanillatweaksgui.gui;
 
-import me.mr7fenix.vanillatweaksgui.VanillaTweaksGuiMain;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -39,7 +38,7 @@ public class MainScreen extends VanillaTweaksGui{
         }));
 
         if (player.hasPermissionLevel(1)) {
-            addDrawableChild(new ButtonWidget(START_POINT, height - 74, 110, 20, Text.of("DataPack Config"), (onPress) -> new ConfigScreen(player, client)));
+            addDrawableChild(new ButtonWidget(START_POINT + 120, height - 30, 110, 20, Text.of("DataPack Config"), (onPress) -> client.setScreen(new ConfigScreen(player, client))));
         }
     }
 }
